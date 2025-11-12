@@ -5,7 +5,6 @@ import trie
 import idautils
 import ida_funcs
 import ida_hexrays
-import ida_kernwin
 import idaapi
 import idc
 import json
@@ -110,8 +109,13 @@ class AgarForm(QDialog):
         
         section3 = QGroupBox("Scope")
         section3_layout = QVBoxLayout()
+        self.scope_warning = QLabel("Warning: Functions in scope will be decompiled (probably multiple times) and thus take some time to complete. Please narrow your scope with the 'Functions starting with' option.")
+        self.scope_warning.setWordWrap(True)
+        self.scope_warning.setStyleSheet("QLabel { color: #b36b00; padding: 4px; }")
+        self.scope_warning.setVisible(False)
+        section3_layout.addWidget(self.scope_warning)
         self.radioButtonCurrentFunction = QRadioButton("Current function")
-        self.radioButtonAllFunctions = QRadioButton(f"All functions ({self.functions.size})")
+        self.radioButtonAllFunctions = QRadioButton(f"All functions ({self.functions.size} functions)")
         self.radioButtonFunctionPrefixFilter = QRadioButton("Functions starting with")
         self.func_prefix = QLineEdit()
         self.func_prefix.setPlaceholderText("Function name prefix")
@@ -120,7 +124,8 @@ class AgarForm(QDialog):
         self.func_prefix.setStyleSheet("QLineEdit { border: 1px solid #999; padding: 2px; }")
         
         self.radioButtonCurrentFunction.setChecked(True)
-        
+        self.radioButtonAllFunctions.toggled.connect(self.scope_warning.setVisible)
+
         section3_layout.addWidget(self.radioButtonCurrentFunction)
         section3_layout.addWidget(self.radioButtonAllFunctions)
         section3_layout.addWidget(self.radioButtonFunctionPrefixFilter)
