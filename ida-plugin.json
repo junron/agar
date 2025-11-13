@@ -6,6 +6,6 @@
     "categories": ["malware-analysis"],
     "description": "Assisting Go Analysis and Reversing",
     "idaVersions": ">=9.0",
-    "version": "1.2.2"
+    "version": "1.2.3"
   }
 }
